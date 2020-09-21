@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-frankenshtain"
+    }
+  },
+  "defaultProject": "angular-frankenshtain",
+  "cli": {
+    "analytics": "3e229373-25f7-4979-b7bc-09ac8f5c3e0b"
+  }
 }

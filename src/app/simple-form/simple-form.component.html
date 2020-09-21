@@ -1,0 +1,22 @@
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label> Email: </label>
+    <input type="email" formControlName="email" />
+    <span *ngIf="emailErrorMessage" class="error">{{ emailErrorMessage }}</span>
+  </div>
+
+  <div>
+    <label> Name: </label>
+    <input type="text" formControlName="name" />
+    <span *ngIf="nameErrorMessage" class="error">{{ nameErrorMessage }}</span>
+  </div>
+
+  <div>
+    <label> Comment: </label>
+    <input type="text" formControlName="comment" />
+  </div>
+
+  <p>Form Status: {{ profileForm.status }}</p>
+
+  <button type="submit" [disabled]="!profileForm.valid">SEND</button>
+</form>
