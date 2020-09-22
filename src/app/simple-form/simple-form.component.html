@@ -3,8 +3,8 @@
     <label> Email: </label>
     <input type="email" formControlName="email" />
     <span *ngIf="_email.invalid && (_email.touched || _email.dirty)">
-      <span *ngIf="_email.errors?.email" class="error">Invalid email</span>
-      <span *ngIf="_email.errors?.required" class="error">Email is required</span>
+      <span *ngIf="_email.hasError('email')" class="error">Invalid email</span>
+      <span *ngIf="_email.hasError('required')" class="error">Email is required</span>
     </span>
   </div>
 
@@ -12,7 +12,7 @@
     <label> Name: </label>
     <input type="text" formControlName="name" />
     <span *ngIf="_name.invalid && (_name.touched || _name.dirty)">
-      <span *ngIf="_name.errors?.required" class="error">Name is required</span>
+      <span *ngIf="_name.hasError('required')" class="error">Name is required</span>
     </span>
   </div>
 
