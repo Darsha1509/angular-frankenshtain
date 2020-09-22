@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-simple-form',
@@ -7,45 +7,29 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./simple-form.component.css'],
 })
 export class SimpleFormComponent implements OnInit {
-  profileForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    name: ['', Validators.required],
-    comment: [''],
-  });
+
+  profileForm: FormGroup;
 
   emailErrorMessage: string = '';
   nameErrorMessage: string = '';
 
-  constructor(private fb: FormBuilder) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.onChanges();
+
+    this.profileForm = new FormGroup({
+      email: new FormControl('', [Validators.email, Validators.required]),
+      name: new FormControl('', Validators.required),
+      comment: new FormControl()
+    });
   }
 
-  onChanges(): void {
-    this.profileForm.get('email').valueChanges.subscribe((val) => {
-      if (this.profileForm.get('email').errors !== null) {
-        if (this.profileForm.get('email').errors.hasOwnProperty('required')) {
-          this.emailErrorMessage = 'Email is required!';
-        } else if (
-          this.profileForm.get('email').errors.hasOwnProperty('email')
-        ) {
-          this.emailErrorMessage = 'Invalid email!';
-        }
-      } else {
-        this.emailErrorMessage = '';
-      }
-    });
+  get _email() {
+    return this.profileForm.get('email');
+  }
 
-    this.profileForm.get('name').valueChanges.subscribe((val) => {
-      if (this.profileForm.get('name').errors !== null) {
-        if (this.profileForm.get('name').errors.hasOwnProperty('required')) {
-          this.nameErrorMessage = 'Name is required!';
-        }
-      } else {
-        this.nameErrorMessage = '';
-      }
-    });
+  get _name() {
+    return this.profileForm.get('name');
   }
 
   onSubmit() {
