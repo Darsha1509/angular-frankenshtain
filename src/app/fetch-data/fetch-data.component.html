@@ -1,10 +1,13 @@
 <div>
-  <input type="text" [formControl]="inputValue" />
-  <button>Search</button>
+  <input type="text" [formControl]="input" />
+  <button (click)="searchPerson()">Search</button>
 </div>
 
+<h2>Heroes:</h2>
 <div>
-  <p></p>
+  <p *ngFor="let hero of heroes; let i = index">
+    <b>Name:</b> {{ hero.name }} <b>Birth year:</b> {{ hero.birth_year }}
+    <b>Gender:</b>
+    {{ hero.gender }}
+  </p>
 </div>
-
-
