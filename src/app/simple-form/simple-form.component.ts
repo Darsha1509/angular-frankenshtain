@@ -10,9 +10,6 @@ export class SimpleFormComponent implements OnInit {
 
   profileForm: FormGroup;
 
-  emailErrorMessage: string = '';
-  nameErrorMessage: string = '';
-
   constructor() {}
 
   ngOnInit(): void {
