@@ -4,10 +4,25 @@
 </div>
 
 <h2>Heroes:</h2>
-<div>
-  <p *ngFor="let hero of heroes; let i = index">
-    <b>Name:</b> {{ hero.name }} <b>Birth year:</b> {{ hero.birth_year }}
-    <b>Gender:</b>
-    {{ hero.gender }}
-  </p>
+<div class="data-container">
+  <div>
+    <h4><b>Females: </b></h4>
+    <p *ngFor="let female of females; let i = index">
+      <b>Name:</b> {{ female.name }} <b>Birth year:</b> {{ female.birth_year }}
+    </p>
+  </div>
+
+  <div>
+    <h4><b>Males: </b></h4>
+    <p *ngFor="let male of males; let i = index">
+      <b>Name:</b> {{ male.name }} <b>Birth year:</b> {{ male.birth_year }}
+    </p>
+  </div>  
+  
+  <div>
+    <h4><b>Undefs: </b></h4>
+    <p *ngFor="let undef of undefs; let i = index">
+      <b>Name:</b> {{ undef.name }} <b>Birth year:</b> {{ undef.birth_year }}
+    </p>
+  </div>
 </div>

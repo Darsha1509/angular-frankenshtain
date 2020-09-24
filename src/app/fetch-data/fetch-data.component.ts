@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+type Heros = { name: string; birth_year: string; gender: string }[];
+
 @Component({
   selector: 'app-fetch-data',
   templateUrl: './fetch-data.component.html',
@@ -12,6 +14,9 @@ import { map } from 'rxjs/operators';
 export class FetchDataComponent implements OnInit {
   input: FormControl;
   heroes: { name: string; birth_year: string; gender: string }[];
+  males: Heros;
+  females: Heros;
+  undefs: Heros;
 
   constructor(private http: HttpClient) {}
 
@@ -27,14 +32,23 @@ export class FetchDataComponent implements OnInit {
         (data: {
           results: { name: string; birth_year: string; gender: string }[];
         }) => {
-          const peopleResult = data.results.map((person) => {
-            return {
-              name: person.name,
-              birth_year: person.birth_year,
-              gender: person.gender,
-            };
+          const resultData: { 
+            male: { name: string; birth_year: string; gender: string }[]; 
+            female: { name: string; birth_year: string; gender: string }[]; 
+            undef: { name: string; birth_year: string; gender: string }[] 
+          } = { 
+            male: [], 
+            female: [], 
+            undef: [] 
+          };
+
+          data.results.map((person) => {
+            person.gender === 'male' ? resultData.male.push(person) : null;
+            person.gender === 'female' ? resultData.female.push(person) : null;
+            person.gender === 'n/a' ? resultData.undef.push(person) : null;
           });
-          return peopleResult;
+
+          return resultData;
         }
       )
     );
@@ -43,14 +57,25 @@ export class FetchDataComponent implements OnInit {
   searchPerson() {
     this.fetchData(
       `https://swapi.dev/api/people/?search=${this.input.value}`
-    ).subscribe((data) => {
-      this.heroes = data;
+    )
+    .subscribe((data) => {
+      this.sortHeroes(data);
     });
   }
 
   getInitialData() {
-    this.fetchData('https://swapi.dev/api/people').subscribe((data) => {
-      this.heroes = data;
+    this.fetchData('https://swapi.dev/api/people')
+    .subscribe((data) => {
+      this.sortHeroes(data);
     });
+  }
+
+  private sortHeroes(data: { 
+    male: { name: string; birth_year: string; gender: string }[]; 
+    female: { name: string; birth_year: string; gender: string }[]; 
+    undef: { name: string; birth_year: string; gender: string }[]}) {
+    this.males = data.male;
+    this.females = data.female;
+    this.undefs = data.undef;
   }
 }
