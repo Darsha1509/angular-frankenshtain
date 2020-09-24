@@ -1,10 +1,16 @@
 <div>
   <input type="text" [formControl]="input" />
-  <button (click)="searchPerson()">Search</button>
 </div>
 
 <h2>Heroes:</h2>
-<div class="data-container">
+
+<h4><b>Females: </b></h4>
+<ng-container *ngIf="female$ | async as females">
+ <p *ngFor="let female of females"><b>Name:</b> {{ female.name }} <b>Birth year:</b> {{ female.birth_year }}</p>
+</ng-container>
+
+
+<!-- <div class="data-container">
   <div>
     <h4><b>Females: </b></h4>
     <p *ngFor="let female of females; let i = index">
@@ -25,4 +31,4 @@
       <b>Name:</b> {{ undef.name }} <b>Birth year:</b> {{ undef.birth_year }}
     </p>
   </div>
-</div>
+</div> -->
