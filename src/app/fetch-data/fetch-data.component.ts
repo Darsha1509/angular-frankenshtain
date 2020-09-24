@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 type Heros = { name: string; birth_year: string; gender: string }[];
 
@@ -50,7 +50,8 @@ export class FetchDataComponent implements OnInit {
 
           return resultData;
         }
-      )
+      ),
+      take(1)
     );
   }
 
