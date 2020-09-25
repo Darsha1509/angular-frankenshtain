@@ -1,34 +1,35 @@
 <div>
-  <input type="text" [formControl]="input" />
+  <input type="text" [formControl]="input" (change)="getData()" />
 </div>
 
 <h2>Heroes:</h2>
 
-<h4><b>Females: </b></h4>
-<ng-container *ngIf="female$ | async as females">
- <p *ngFor="let female of females"><b>Name:</b> {{ female.name }} <b>Birth year:</b> {{ female.birth_year }}</p>
-</ng-container>
-
-
-<!-- <div class="data-container">
+<div class="data-container">
   <div>
     <h4><b>Females: </b></h4>
-    <p *ngFor="let female of females; let i = index">
-      <b>Name:</b> {{ female.name }} <b>Birth year:</b> {{ female.birth_year }}
-    </p>
+    <ng-container *ngIf="female$ | async as females">
+      <p *ngFor="let female of females">
+        <b>Name:</b> {{ female.name }} <b>Birth year:</b>
+        {{ female.birth_year }}
+      </p>
+    </ng-container>
   </div>
 
   <div>
     <h4><b>Males: </b></h4>
-    <p *ngFor="let male of males; let i = index">
-      <b>Name:</b> {{ male.name }} <b>Birth year:</b> {{ male.birth_year }}
-    </p>
-  </div>  
-  
-  <div>
-    <h4><b>Undefs: </b></h4>
-    <p *ngFor="let undef of undefs; let i = index">
-      <b>Name:</b> {{ undef.name }} <b>Birth year:</b> {{ undef.birth_year }}
-    </p>
+    <ng-container *ngIf="male$ | async as males">
+      <p *ngFor="let male of males">
+        <b>Name:</b> {{ male.name }} <b>Birth year:</b> {{ male.birth_year }}
+      </p>
+    </ng-container>
   </div>
-</div> -->
+
+  <div>
+    <h4><b>N/a: </b></h4>
+    <ng-container *ngIf="na$ | async as nas">
+      <p *ngFor="let na of nas">
+        <b>Name:</b> {{ na.name }} <b>Birth year:</b> {{ na.birth_year }}
+      </p>
+    </ng-container>
+  </div>
+</div>
