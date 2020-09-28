@@ -7,17 +7,16 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./simple-form.component.css'],
 })
 export class SimpleFormComponent implements OnInit {
-
   profileForm: FormGroup;
 
   constructor() {}
 
   ngOnInit(): void {
-
     this.profileForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
       name: new FormControl('', Validators.required),
-      comment: new FormControl()
+      comment: new FormControl(),
+      rating: new FormControl(),
     });
   }
 
@@ -33,4 +32,3 @@ export class SimpleFormComponent implements OnInit {
     console.log(this.profileForm.value);
   }
 }
-

@@ -5,11 +5,9 @@ import { HttpClient } from '@angular/common/http';
 export class HeroesService {
   constructor(private http: HttpClient) {}
 
-  getHeroes() {
-    return this.http.get('https://swapi.dev/api/people/');
-  }
-
-  searchHeroes(searchParam: string) {
-    return this.http.get(`https://swapi.dev/api/people/?search=${searchParam}`);
+  getHeroes(searchParam: string) {
+    return searchParam === ''
+      ? this.http.get('https://swapi.dev/api/people/')
+      : this.http.get(`https://swapi.dev/api/people/?search=${searchParam}`);
   }
 }

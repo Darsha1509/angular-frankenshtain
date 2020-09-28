@@ -7,9 +7,11 @@ import { AppComponent } from './app.component';
 import { SimpleFormComponent } from './simple-form/simple-form.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HttpClientModule } from '@angular/common/http';
+import { RatingComponent } from './rating/rating.component';
+import { StarComponent } from './star/star.component';
 
 @NgModule({
-  declarations: [AppComponent, SimpleFormComponent, FetchDataComponent],
+  declarations: [AppComponent, SimpleFormComponent, FetchDataComponent, RatingComponent, StarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

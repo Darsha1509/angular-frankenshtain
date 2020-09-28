@@ -47,11 +47,7 @@ export class FetchDataComponent implements OnInit {
       startWith(''),
       debounceTime(500),
       switchMap((search: string) => {
-        if (search === '') {
-          return this.heroesService.getHeroes();
-        } else {
-          return this.heroesService.searchHeroes(search);
-        }
+        return this.heroesService.getHeroes(search);
       }),
       map((data: { results: Hero[] }) =>
         data.results.map(({ name, birth_year, gender }) => {

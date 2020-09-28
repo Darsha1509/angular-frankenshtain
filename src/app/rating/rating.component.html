@@ -1,0 +1,7 @@
+<div>
+  <app-star
+    *ngFor="let starStatus of ratingData; let i = index"
+    [status]="starStatus"
+    (click)="onRatingChange(i)"
+  ></app-star>
+</div>
