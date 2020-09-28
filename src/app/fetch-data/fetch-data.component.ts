@@ -27,9 +27,6 @@ interface Hero {
 })
 export class FetchDataComponent implements OnInit {
   input: FormControl;
-  males: Hero[];
-  females: Hero[];
-  undefs: Hero[];
 
   users$: Observable<{}>;
 
@@ -50,7 +47,6 @@ export class FetchDataComponent implements OnInit {
       startWith(''),
       debounceTime(500),
       switchMap((search: string) => {
-        console.log(search === '');
         if (search === '') {
           return this.heroesService.getHeroes();
         } else {
