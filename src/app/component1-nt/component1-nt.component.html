@@ -1,19 +1,30 @@
 <div>
-  <h4>Component 1</h4>
-  <p *ngFor="let user of users">
-    <b>Name:</b> {{ user.name }} <b>Age:</b>
-    {{ user.age }}
-  </p>
+  <h3>Component 1</h3>
 
-  <form [formGroup]="newUser" (ngSubmit)="onSubmit(newUser.value)">
-    <div>
-      <label>Name:</label>
-      <input type="text" formControlName="name" />
-    </div>
-    <div>
-      <label>Age:</label>
-      <input type="text" formControlName="age" />
-    </div>
-    <button type="submit" [disabled]="!newUser.valid">Submit</button>
-  </form>
+  <div>
+    <h4><b>Usual Store (task1)</b></h4>
+
+    <p *ngFor="let user of users">
+      <b>Name:</b> {{ user.name }} <b>Age:</b>
+      {{ user.age }}
+    </p>
+
+    <p>Add user to usual store</p>
+    <app-add-user-form
+      (message)="setUsualStoreMessage($event)"
+    ></app-add-user-form>
+  </div>
+
+  <h4><b>Local Storage</b></h4>
+
+  <p>Add user to local store</p>
+  <app-add-user-form
+    (message)="setLocalStoreMessage($event)"
+  ></app-add-user-form>
+  <h5>Getting data from Local Storage</h5>
+  <input type="text" [formControl]="lsGetKey" />
+  <button type="submit" (click)="getDataFromLocalStorage(lsGetKey.value)">
+    Get user
+  </button>
+  <p *ngIf="lsGetUser">Name: {{ lsGetUser.name }}; Age: {{ lsGetUser.age }}</p>
 </div>

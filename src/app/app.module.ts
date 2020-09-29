@@ -14,6 +14,7 @@ import { Component1NtComponent } from './component1-nt/component1-nt.component';
 import { Component2NtComponent } from './component2-nt/component2-nt.component';
 import { DATA_STORAGE } from './data-storage.injection-token';
 import { DataStorage } from './service1-it.service';
+import { AddUserFormComponent } from './add-user-form/add-user-form.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { DataStorage } from './service1-it.service';
     InjectionTokenComponent,
     Component1NtComponent,
     Component2NtComponent,
+    AddUserFormComponent,
   ],
   imports: [
     BrowserModule,

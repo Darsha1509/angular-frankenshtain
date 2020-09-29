@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { User } from '../userInterface';
+import { DATA_STORAGE } from '../data-storage.injection-token';
 
 @Component({
   selector: 'app-component2-nt',
@@ -6,17 +10,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./component2-nt.component.css'],
 })
 export class Component2NtComponent implements OnInit {
-  data = {
-    name: 'Dasha',
-    age: 28,
-    gender: 'female',
-  };
+  users: User[];
+  newUser: FormGroup;
 
-  constructor() {}
+  constructor(@Inject(DATA_STORAGE) private dataService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setUsers();
 
-  get _data() {
-    return JSON.stringify(this.data);
+    this.newUser = new FormGroup({
+      name: new FormControl('', Validators.required),
+      age: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[0-9]\d*$/),
+      ]),
+    });
+  }
+
+  onSubmit(user: User) {
+    this.dataService.setData(user);
+    this.setUsers();
+  }
+
+  private setUsers() {
+    let users = [];
+    this.dataService
+      .getData()
+      .subscribe((user: User) => {
+        users.push(user);
+      })
+      .unsubscribe();
+    this.users = users;
   }
 }

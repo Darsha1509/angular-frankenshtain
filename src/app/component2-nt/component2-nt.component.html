@@ -1,2 +1,19 @@
-<h4>Component 2</h4>
-<p>{{ _data }}</p>
+<div>
+  <h4>Component 2</h4>
+  <p *ngFor="let user of users">
+    <b>Name:</b> {{ user.name }} <b>Age:</b>
+    {{ user.age }}
+  </p>
+
+  <form [formGroup]="newUser" (ngSubmit)="onSubmit(newUser.value)">
+    <div>
+      <label>Name:</label>
+      <input type="text" formControlName="name" />
+    </div>
+    <div>
+      <label>Age:</label>
+      <input type="text" formControlName="age" />
+    </div>
+    <button type="submit" [disabled]="!newUser.valid">Submit</button>
+  </form>
+</div>

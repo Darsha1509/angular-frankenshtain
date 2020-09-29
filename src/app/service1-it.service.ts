@@ -21,13 +21,10 @@ export class DataStorage {
   ];
 
   getData() {
-    const val = from(this.data);
-    console.log(val);
-    return val;
+    return from(this.data);
   }
 
   setData(user: User) {
     this.data.push(user);
-    console.log(this.data);
   }
 }
