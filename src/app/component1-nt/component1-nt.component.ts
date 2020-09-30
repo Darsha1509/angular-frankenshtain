@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { User } from '../user.model';
 import { GLOBAL_STORAGE } from '../global-storage.token';
 import { LOCAL_STORAGE } from '../local-storage.token';
-import { LocalStorageService } from '../localStorage.service';
+import { LocalStorageService } from '../local-storage.service';
 
 @Component({
   selector: 'app-component1-nt',
