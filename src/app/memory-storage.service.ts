@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { from } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-import { User } from './userInterface';
+import { User } from './user.model';
 
 @Injectable()
-export class DataStorage {
+export class MemoryStorageService {
   data: User[] = [
     {
       name: 'Bob',
@@ -21,7 +21,7 @@ export class DataStorage {
   ];
 
   getData() {
-    return from(this.data);
+    return new BehaviorSubject(this.data);
   }
 
   setData(user: User) {

@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
-import { User } from '../userInterface';
-import { DATA_STORAGE } from '../data-storage.injection-token';
-import { LOCAL_STORAGE } from '../local-storage.injection-token';
+import { User } from '../user.model';
+import { GLOBAL_STORAGE } from '../global-storage.token';
+import { LOCAL_STORAGE } from '../local-storage.token';
 import { LocalStorageService } from '../localStorage.service';
 
 @Component({
@@ -18,36 +19,22 @@ import { LocalStorageService } from '../localStorage.service';
   ],
 })
 export class Component1NtComponent implements OnInit {
-  users: User[];
-  newUser: User;
+  users$: Observable<User[]>;
   lsGetKey: FormControl;
   lsGetUser: User;
 
   constructor(
-    @Inject(DATA_STORAGE) private dataService,
+    @Inject(GLOBAL_STORAGE) private dataService,
     @Inject(LOCAL_STORAGE) private localStorageService
   ) {}
 
   ngOnInit(): void {
-    this.setUsers();
+    this.users$ = this.dataService.getData();
     this.lsGetKey = new FormControl();
   }
 
-  private setUsers() {
-    let users = [];
-    this.dataService
-      .getData()
-      .subscribe((user: User) => {
-        users.push(user);
-      })
-      .unsubscribe();
-    this.users = users;
-  }
-
   setUsualStoreMessage(user: User) {
-    this.newUser = user;
     this.dataService.setData(user);
-    this.setUsers();
   }
 
   setLocalStoreMessage(user: User) {

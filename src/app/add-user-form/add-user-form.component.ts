@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { User } from '../userInterface';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-add-user-form',

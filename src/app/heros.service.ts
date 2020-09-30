@@ -6,7 +6,7 @@ export class HeroesService {
   constructor(private http: HttpClient) {}
 
   getHeroes(searchParam: string) {
-    return searchParam === ''
+    return searchParam
       ? this.http.get('https://swapi.dev/api/people/')
       : this.http.get(`https://swapi.dev/api/people/?search=${searchParam}`);
   }

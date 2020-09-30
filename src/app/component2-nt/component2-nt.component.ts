@@ -1,45 +1,41 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
-import { User } from '../userInterface';
-import { DATA_STORAGE } from '../data-storage.injection-token';
+import { User } from '../user.model';
+import { GLOBAL_STORAGE } from '../global-storage.token';
+import { LOCAL_STORAGE } from '../local-storage.token';
+import { MemoryStorageService } from '../memory-storage.service';
 
 @Component({
   selector: 'app-component2-nt',
   templateUrl: './component2-nt.component.html',
   styleUrls: ['./component2-nt.component.css'],
+  providers: [
+    {
+      provide: LOCAL_STORAGE,
+      useClass: MemoryStorageService,
+    },
+  ],
 })
 export class Component2NtComponent implements OnInit {
-  users: User[];
-  newUser: FormGroup;
+  users$: Observable<User[]>;
+  localUsers$: Observable<User[]>;
 
-  constructor(@Inject(DATA_STORAGE) private dataService) {}
+  constructor(
+    @Inject(GLOBAL_STORAGE) private dataService,
+    @Inject(LOCAL_STORAGE) private localMemoryService
+  ) {}
 
   ngOnInit(): void {
-    this.setUsers();
-
-    this.newUser = new FormGroup({
-      name: new FormControl('', Validators.required),
-      age: new FormControl('', [
-        Validators.required,
-        Validators.pattern(/^[0-9]\d*$/),
-      ]),
-    });
+    this.users$ = this.dataService.getData();
+    this.localUsers$ = this.localMemoryService.getData();
   }
 
-  onSubmit(user: User) {
+  setUsualStoreMessage(user: User) {
     this.dataService.setData(user);
-    this.setUsers();
   }
 
-  private setUsers() {
-    let users = [];
-    this.dataService
-      .getData()
-      .subscribe((user: User) => {
-        users.push(user);
-      })
-      .unsubscribe();
-    this.users = users;
+  setLocalStoreMessage(user: User) {
+    this.localMemoryService.setData(user);
   }
 }

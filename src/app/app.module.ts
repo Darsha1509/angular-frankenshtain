@@ -12,8 +12,8 @@ import { StarComponent } from './star/star.component';
 import { InjectionTokenComponent } from './injection-token/injection-token.component';
 import { Component1NtComponent } from './component1-nt/component1-nt.component';
 import { Component2NtComponent } from './component2-nt/component2-nt.component';
-import { DATA_STORAGE } from './data-storage.injection-token';
-import { DataStorage } from './service1-it.service';
+import { GLOBAL_STORAGE } from './global-storage.token';
+import { MemoryStorageService } from './memory-storage.service';
 import { AddUserFormComponent } from './add-user-form/add-user-form.component';
 
 @NgModule({
@@ -36,8 +36,8 @@ import { AddUserFormComponent } from './add-user-form/add-user-form.component';
   ],
   providers: [
     {
-      provide: DATA_STORAGE,
-      useClass: DataStorage,
+      provide: GLOBAL_STORAGE,
+      useClass: MemoryStorageService,
     },
   ],
   bootstrap: [AppComponent],

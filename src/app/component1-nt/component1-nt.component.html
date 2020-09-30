@@ -4,10 +4,17 @@
   <div>
     <h4><b>Usual Store (task1)</b></h4>
 
-    <p *ngFor="let user of users">
+    <!-- <p *ngFor="let user of users">
       <b>Name:</b> {{ user.name }} <b>Age:</b>
       {{ user.age }}
-    </p>
+    </p> -->
+
+    <div *ngIf="users$ | async as users">
+      <p *ngFor="let user of users">
+        <b>Name:</b> {{ user.name }} <b>Age:</b>
+        {{ user.age }}
+      </p>
+    </div>
 
     <p>Add user to usual store</p>
     <app-add-user-form

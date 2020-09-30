@@ -38,7 +38,9 @@ export class RatingComponent implements OnInit, ControlValueAccessor {
     this.onChange(i + 1);
   }
 
-  writeValue() {}
+  writeValue() {
+    console.log(this.ratingData);
+  }
 
   registerOnChange(callback: (change: any) => void): void {
     this.onChange = callback;

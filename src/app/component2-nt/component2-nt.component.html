@@ -1,19 +1,29 @@
 <div>
   <h4>Component 2</h4>
-  <p *ngFor="let user of users">
-    <b>Name:</b> {{ user.name }} <b>Age:</b>
-    {{ user.age }}
-  </p>
 
-  <form [formGroup]="newUser" (ngSubmit)="onSubmit(newUser.value)">
-    <div>
-      <label>Name:</label>
-      <input type="text" formControlName="name" />
-    </div>
-    <div>
-      <label>Age:</label>
-      <input type="text" formControlName="age" />
-    </div>
-    <button type="submit" [disabled]="!newUser.valid">Submit</button>
-  </form>
+  <h5><b>Global store service</b></h5>
+  <div *ngIf="users$ | async as users">
+    <p *ngFor="let user of users">
+      <b>Name:</b> {{ user.name }} <b>Age:</b>
+      {{ user.age }}
+    </p>
+  </div>
+
+  <p>Add user to usual store</p>
+  <app-add-user-form
+    (message)="setUsualStoreMessage($event)"
+  ></app-add-user-form>
+
+  <h5><b>Local store service</b></h5>
+  <div *ngIf="localUsers$ | async as users">
+    <p *ngFor="let user of users">
+      <b>Name:</b> {{ user.name }} <b>Age:</b>
+      {{ user.age }}
+    </p>
+  </div>
+
+  <p>Add user to usual store</p>
+  <app-add-user-form
+    (message)="setLocalStoreMessage($event)"
+  ></app-add-user-form>
 </div>
