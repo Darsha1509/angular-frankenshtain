@@ -119,6 +119,11 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-frankenshtain"
+    }
+  },
+  "defaultProject": "angular-frankenshtain",
+  "cli": {
+    "analytics": "bc4e8985-74c0-4706-9360-ae7f81f2714b",
+    "defaultCollection": "@datorama/akita"
+  }
 }
