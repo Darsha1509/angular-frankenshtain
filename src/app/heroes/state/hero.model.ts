@@ -1,7 +1,5 @@
-import { ID } from '@datorama/akita';
-
 export interface Hero {
-  id: ID;
+  id: number;
   name: string;
   birth_year: string;
   gender: string;
