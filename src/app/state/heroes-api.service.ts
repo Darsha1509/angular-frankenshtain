@@ -9,15 +9,11 @@ import { Hero } from './hero.model';
 export class HeroesApiService {
   constructor(private http: HttpClient) {}
 
-  getHeroes(): Observable<Hero[]> {
-    return this.http.get('https://swapi.dev/api/people/').pipe(
-      map((res: { results: [] }, i) => {
-        return res.results;
-      })
-    );
+  getPage(page: string) {
+    return this.http.get<any>(`https://swapi.dev/api/people/?page=${page}`);
   }
 
-  getHeroesPagination(page: string) {
-    return this.http.get<any>(`https://swapi.dev/api/people/?page=${page}`);
+  getHero(search: string) {
+    return this.http.get<any>(`https://swapi.dev/api/people/?search=${search}`);
   }
 }

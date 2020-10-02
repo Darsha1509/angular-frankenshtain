@@ -1,5 +1,5 @@
 <div>
-  <input type="text" formControlName="input" />
+  <input type="text" [formControl]="input" (change)="inputChange()" />
 </div>
 
 <div class="data-container">

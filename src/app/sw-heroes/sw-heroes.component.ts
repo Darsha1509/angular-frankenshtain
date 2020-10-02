@@ -1,7 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { switchMap, map, merge, startWith, debounceTime } from 'rxjs/operators';
+import {
+  switchMap,
+  map,
+  merge,
+  startWith,
+  debounceTime,
+  takeLast,
+} from 'rxjs/operators';
 import { PaginationResponse, PaginatorPlugin } from '@datorama/akita';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -18,7 +25,7 @@ import { HEROES_PAGINATOR } from '../state/heroes-paginator';
 })
 export class SwHeroesComponent implements OnInit {
   input: FormControl;
-  pagination$: Observable<PaginationResponse<HeroesState>>;
+  pagination$: any;
   currentPage: BehaviorSubject<number>;
 
   constructor(
@@ -31,8 +38,6 @@ export class SwHeroesComponent implements OnInit {
 
   ngOnInit(): void {
     this.input = new FormControl('');
-    // this.heroesService.setInitialState();
-    // this.users$ = this.heroesQuery.getHeroes();
     this.currentPage = new BehaviorSubject(1);
 
     this.currentPage.subscribe((data) => {
@@ -40,13 +45,29 @@ export class SwHeroesComponent implements OnInit {
       this.paginatorRef.setPage(data);
     });
 
-    this.pagination$ = this.paginatorRef.pageChanges.pipe(
-      switchMap((page) => {
-        const reqFn = () => this.heroesService.getPage(String(page));
+    this.location.onUrlChange((val) => {
+      this.route.queryParamMap.subscribe((params) => {
+        if (params.get('page')) {
+          const pageParam = this.currentPage.value;
+          this.pagination$ = this.paginatorRef.pageChanges.pipe(
+            switchMap((page) => {
+              const reqFn = () => this.heroesService.getPage(String(pageParam));
 
-        return this.paginatorRef.getPage(reqFn);
-      })
-    );
+              return this.paginatorRef.getPage(reqFn);
+            })
+          );
+        } else if (params.get('search')) {
+          const searchParam = params.get('search');
+          let hero = this.heroesQuery.selectEntity(searchParam);
+
+          if (hero) {
+            this.pagination$ = hero;
+          } else {
+            this.pagination$ = this.heroesService.getHero(searchParam);
+          }
+        }
+      });
+    });
   }
 
   goPrevPage() {
@@ -61,5 +82,9 @@ export class SwHeroesComponent implements OnInit {
   goNextPage() {
     this.currentPage.value !== 9 &&
       this.currentPage.next(this.currentPage.value + 1);
+  }
+
+  inputChange() {
+    this.input.valueChanges.subscribe((value) => console.log(value));
   }
 }

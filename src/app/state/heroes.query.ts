@@ -14,4 +14,8 @@ export class HeroesQuery extends QueryEntity<HeroesState> {
   getHeroes(): Observable<Hero[]> {
     return this.selectAll();
   }
+
+  getHero(param: string): Observable<Hero> {
+    return this.selectEntity(param);
+  }
 }

@@ -15,30 +15,8 @@ export class HeroesService {
     private api: HeroesApiService
   ) {}
 
-  setInitialState() {
-    this.api
-      .getHeroes()
-      .pipe(take(1))
-      .subscribe((heroes) => {
-        const heroesWithId = heroes.map(
-          (
-            hero: { name: string; birth_year: string; gender: string },
-            index
-          ) => {
-            return {
-              id: index,
-              name: hero.name,
-              birth_year: hero.birth_year,
-              gender: hero.gender,
-            };
-          }
-        );
-        this.heroesStore.set(heroesWithId);
-      });
-  }
-
   getPage(page: string): Observable<PaginationResponse<Hero>> {
-    return this.api.getHeroesPagination(page).pipe(
+    return this.api.getPage(page).pipe(
       map((response: { count: number; results: [] }) => {
         let heroes = response.results.map((hero: Hero) => {
           return {
@@ -57,6 +35,20 @@ export class HeroesService {
         };
       }),
       take(1)
+    );
+  }
+
+  getHero(search: string): Observable<Hero> {
+    return this.api.getHero(search).pipe(
+      map((res) => {
+        let searchedHero = {
+          id: res.results[0].name,
+          name: res.results[0].name,
+          gender: res.results[0].gender,
+          birth_year: res.results[0].birth_year,
+        };
+        return searchedHero;
+      })
     );
   }
 }
