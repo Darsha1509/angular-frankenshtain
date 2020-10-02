@@ -1,0 +1,9 @@
+li a {
+  cursor: pointer;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+}

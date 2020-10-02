@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { map, mapTo, take } from 'rxjs/operators';
 
 import { Hero } from './hero.model';
 
@@ -11,16 +11,13 @@ export class HeroesApiService {
 
   getHeroes(): Observable<Hero[]> {
     return this.http.get('https://swapi.dev/api/people/').pipe(
-      map((response: { results: Hero[] }) => {
-        return response.results.map((hero, index) => {
-          return {
-            id: index,
-            name: hero.name,
-            gender: hero.gender,
-            birth_year: hero.birth_year,
-          };
-        });
+      map((res: { results: [] }, i) => {
+        return res.results;
       })
     );
+  }
+
+  getHeroesPagination(page: string) {
+    return this.http.get<any>(`https://swapi.dev/api/people/?page=${page}`);
   }
 }
