@@ -1,7 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject, of } from 'rxjs';
-import { switchMap, map, debounceTime, startWith } from 'rxjs/operators';
+import {
+  switchMap,
+  map,
+  debounceTime,
+  startWith,
+  filter,
+  tap,
+} from 'rxjs/operators';
 import { PaginatorPlugin } from '@datorama/akita';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -60,13 +67,19 @@ export class SwHeroesComponent implements OnInit {
         } else if (p.search) {
           const searchParam = p.search;
 
-          this.pagination$ = this.heroesQuery.selectEntity(searchParam).pipe(
+          this.pagination$ = this.heroesQuery.getHeroes().pipe(
+            map((heroes) => {
+              const hero = heroes.find(
+                (hero) => hero.id.search(new RegExp(searchParam)) >= 0
+              );
+              return hero;
+            }),
             switchMap((val) =>
               val
                 ? of({ data: [val] })
                 : this.heroesService.getHero(searchParam).pipe(
-                    switchMap(() =>
-                      this.heroesQuery.selectEntity(searchParam).pipe(
+                    switchMap((res) =>
+                      this.heroesQuery.selectEntity(res.name).pipe(
                         map((val) => {
                           return { data: [val] };
                         })
