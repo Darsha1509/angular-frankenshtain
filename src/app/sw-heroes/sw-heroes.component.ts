@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject, of } from 'rxjs';
-import { switchMap, map, debounceTime } from 'rxjs/operators';
+import { switchMap, map, debounceTime, startWith } from 'rxjs/operators';
 import { PaginatorPlugin } from '@datorama/akita';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { HeroesQuery } from '../state/heroes.query';
 import { HeroesState } from '../state/heroes.store';
@@ -26,13 +25,24 @@ export class SwHeroesComponent implements OnInit {
     private heroesQuery: HeroesQuery,
     private heroesService: HeroesService,
     private route: ActivatedRoute,
-    private location: Location,
     private router1: Router
   ) {}
 
   ngOnInit(): void {
     this.input = new FormControl('');
     this.currentPage = new BehaviorSubject(1);
+
+    this.currentPage.subscribe((data) => {
+      this.router1.navigate([], { queryParams: { page: data } });
+    });
+
+    this.pagination$ = this.paginatorRef.pageChanges.pipe(
+      switchMap((page) => {
+        const reqFn = () => this.heroesService.getPage(String(page));
+
+        return this.paginatorRef.getPage(reqFn);
+      })
+    );
 
     this.input.valueChanges.pipe(debounceTime(500)).subscribe((val) => {
       val
@@ -42,24 +52,13 @@ export class SwHeroesComponent implements OnInit {
           });
     });
 
-    this.currentPage.subscribe((data) => {
-      this.router1.navigate([], { queryParams: { page: data } });
-    });
-
-    this.location.onUrlChange((val) => {
-      this.route.queryParamMap.subscribe((params) => {
-        if (params.get('page')) {
-          const pageParam = this.currentPage.value;
-          this.paginatorRef.setPage(pageParam);
-          this.pagination$ = this.paginatorRef.pageChanges.pipe(
-            switchMap((page) => {
-              const reqFn = () => this.heroesService.getPage(String(pageParam));
-
-              return this.paginatorRef.getPage(reqFn);
-            })
-          );
-        } else if (params.get('search')) {
-          const searchParam = params.get('search');
+    this.route.queryParams
+      .pipe(startWith({ page: '1' }))
+      .subscribe((p: { page: string; search: string }) => {
+        if (p.page) {
+          this.paginatorRef.setPage(+p.page);
+        } else if (p.search) {
+          const searchParam = p.search;
 
           this.pagination$ = this.heroesQuery.selectEntity(searchParam).pipe(
             switchMap((val) =>
@@ -78,7 +77,6 @@ export class SwHeroesComponent implements OnInit {
           );
         }
       });
-    });
   }
 
   goPrevPage() {
