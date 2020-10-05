@@ -16,6 +16,7 @@ export class HeroesQuery extends QueryEntity<HeroesState> {
   }
 
   getHero(param: string): Observable<Hero> {
+    console.log('here');
     return this.selectEntity(param);
   }
 }

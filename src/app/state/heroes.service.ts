@@ -47,6 +47,7 @@ export class HeroesService {
           gender: res.results[0].gender,
           birth_year: res.results[0].birth_year,
         };
+        this.heroesStore.add(searchedHero);
         return searchedHero;
       })
     );
